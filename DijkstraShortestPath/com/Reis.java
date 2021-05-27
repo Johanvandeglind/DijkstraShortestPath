@@ -5,53 +5,51 @@ import java.util.List;
 public class Reis implements Comparable {
     Stap to;
     Stap from;
-
+    Map<Integer,List<Stap>> path = new HashMap<>();
+    List<String> inner = new ArrayList<>();
     public Reis(Stap to, Stap from) {
         this.to = to;
         this.from = from;
     }
 
-    public static Map<Integer,List<Stap>> route(Stap stap) {
-        Map<Integer,List<Stap>> path = new HashMap<>();
-
-
-        return path;
+    public List<String> route(Stap stap) {
+        inner.add(stap.getName());
+        Stap best = getBestDir(stap);
+        return inner;
     }
 
-//    public static Map<Integer,List<Stap>> route(Stap stap) {
-//
-//        Map<Integer,List<Stap>> path = new HashMap<>();
-//        List<Stap> inner = new ArrayList<>();
-//        inner.add(stap);
-//        System.out.println(stap.getName());
-//
-//        for (int x=0;x<stap.getDirections().size();x++) {
-//            Stap secondStop = stap.getDirections().get(x);
-//            inner.add(secondStop);
-//            System.out.println(secondStop.getName());
-//
-//            for (int i=0;i<secondStop.getDirections().size();i++) {
-//                Stap thirdStop = secondStop.getDirections().get(i);
-//                inner.add(thirdStop);
-//                System.out.println(thirdStop.getName());
-//
-//                for (int a=0;a<thirdStop.getDirections().size();a++) {
-//                    Stap fourthStop = secondStop.getDirections().get(a);
-//                    System.out.println(fourthStop.getName());
-//                    inner.add(fourthStop);
-//                }
-//
-//
-//            }
-//            path.put(x,inner);
-//
-//        }
-//
-//        return path;
-//    }
+    public Stap getBestDir(Stap stap){
+        if (stap.getDirections().size() == 0){
+            //inner.add(stap);
+            return stap;
+        }
+        if (stap.getDirections().size() == 1){
+            inner.add(stap.getDirections().get(0).getName());
+            return getBestDir(stap.getDirections().get(0));
+        }
+        else if (stap.getDirections().size() == 2){
+            inner.add(compareTo(stap.getDirections().get(0),stap.getDirections().get(1)).getName());
+            return getBestDir(compareTo(stap.getDirections().get(0),stap.getDirections().get(1)));
+        }
+        else{
+            Stap best = compareTo(stap.getDirections().get(0),stap.getDirections().get(1));
+            for (int a=1;a<stap.getDirections().size()-1;a++) {
+                best = compareTo(best,stap.getDirections().get(a));
+            }
+            inner.add(best.getName());
+            return getBestDir(best);
+        }
 
+    }
 
     public Stap compareTo(Stap stap1, Stap stap2) {
-        return null;
+        if (stap1.getAfstand() < stap2.getAfstand()){
+            return stap1;
+        }
+        else if(stap1.getAfstand() > stap2.getAfstand()){
+            return stap2;
+        }
+        else{return stap1;}
+
     }
 }
