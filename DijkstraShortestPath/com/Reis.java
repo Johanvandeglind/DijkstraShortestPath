@@ -52,4 +52,14 @@ public class Reis implements Comparable {
         else{return stap1;}
 
     }
+    public Stap compareTo(Stap stap1, Stap stap2,Boolean inverted) {
+        if (stap1.getAfstand() > stap2.getAfstand()){
+            return stap1;
+        }
+        else if(stap1.getAfstand() < stap2.getAfstand()){
+            return stap2;
+        }
+        else{return stap1;}
+
+    }
 }
